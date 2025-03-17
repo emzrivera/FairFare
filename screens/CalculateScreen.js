@@ -1,12 +1,24 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
+export default function CalculateScreen() {
+  const [startLocation, setStartLocation] = useState("");
+  const [endLocation, setEndLocation] = useState("");
+  // const [fare, setFare] = useState("");
+  const navigation = useNavigation();
 
+  const handleCalculateFare = () => {
+    if (startLocation && endLocation) {
+      navigation.navigate("FareResult", { startLocation, endLocation});
+    } else {
+      Alert.alert("Missing Input", "Please enter all fields before proceeding.");
+    }
+  };
 
-export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <Image source={require('../assets/home-bg.png')} style={styles.bgImage} />
@@ -17,16 +29,16 @@ export default function HomeScreen() {
       <Text style={styles.inputlabel}>From</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="Yu Boarding House, Queborac..." style={styles.input} />
+        <TextInput placeholder="Yu Boarding House, Queborac..." style={styles.input} onChangeText={setStartLocation} />
       </View>
 
       <Text style={styles.inputlabel}>To</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="McDonald's Magsaysay, Magsay..." style={styles.input} />
+        <TextInput placeholder="McDonald's Magsaysay, Magsay..." style={styles.input} onChangeText={setEndLocation} />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleCalculateFare}>
         <Text style={styles.buttonText}>Calculate Fare</Text>
       </TouchableOpacity>
 
@@ -89,8 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white, 
     padding: 20, 
-    paddingTop: 80,
-    paddingBottom: 80
+    paddingTop: 80
 },
 bgImage: {
     position: 'absolute', // Allows positioning anywhere
@@ -159,7 +170,7 @@ bgImage: {
   fareTitle: { 
     fontSize: 20, 
     fontFamily: FONTS.bold, 
-    color: COLORS.white, 
+    color: COLORS.brown, 
     marginBottom: 10,
     marginLeft: 25
 },
@@ -179,19 +190,18 @@ bgImage: {
   leftcell: {
     fontSize: 12,
     flex: 1,
-    color: COLORS.white
+    color: COLORS.brown
 },
   rightcell: {
     fontSize: 14,
-    fontFamily: FONTS.bold,
+    fontWeight: 700,
     flex: 1,
-    color: COLORS.white,
+    color: COLORS.brown,
     textAlign: 'right',
 },
   trackTitle: { 
     fontSize: 18, 
     fontFamily: FONTS.bold, 
-    // marginVertical: 20,
     padding: 15
 },
   tracktable: {
@@ -227,7 +237,8 @@ bgImage: {
     padding: 5, 
     borderRadius: 10, 
     alignItems: 'center', 
-    marginHorizontal: 15
+    marginHorizontal: 15,
+    marginBottom: 50
 },
   historyText: { 
     fontSize: 16, 
