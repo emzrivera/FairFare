@@ -43,10 +43,10 @@ export default function ReportScreen() {
               style={styles.dropdown} 
               onPress={() => pickerRef.current?.togglePicker()}
             >
-              <Text style={{ color: issueType ? "#332000" : "#A9A9A9" }}>
+              <Text style={{ fontSize: 16, color: issueType ? "#332000" : "#A9A9A9" }}>
                 {issueType ? issueType.replace("_", " ").toUpperCase() : "Select Issue Type..."}
               </Text>
-              <FontAwesome name="chevron-down" size={16} color="#332000" />
+              <FontAwesome name="chevron-down" size={16} color="#737373"/>
             </TouchableOpacity>
 
             <RNPickerSelect
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 8,
     padding: 10,
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 10,
     marginHorizontal: 10,
   },
