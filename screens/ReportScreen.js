@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from "react
 import { FontAwesome } from "@expo/vector-icons"; 
 import RNPickerSelect from "react-native-picker-select";
 import { ScrollView } from "react-native";
+import { COLORS, FONTS } from '../constants/theme';
 
 
 export default function ReportScreen() {
