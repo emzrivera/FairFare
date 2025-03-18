@@ -12,7 +12,7 @@ export default function ReportScreen() {
   
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         
         <View style={styles.header}>
           <Image source={require('../assets/Report-icon.png')} style={styles.headerImage} />
@@ -85,7 +85,7 @@ export default function ReportScreen() {
           <Text style={styles.submitText}>Submit</Text>
         </TouchableOpacity>
 
-      </View>
+      </ScrollView>
     </ScrollView>
   );
 }
@@ -95,12 +95,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     marginTop: 70,
-    
+    backgroundColor: COLORS.white
   },
   header: {
     flexDirection: "column",
     alignItems: "flex-start",
     marginBottom: 10,
+    backgroundColor: COLORS.white
   },
   title: {
     fontSize: 32,
