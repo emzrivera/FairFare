@@ -102,8 +102,8 @@ header: {
   justifyContent: 'space-between',
 },
 heading: {
-  fontSize: 25,
-  fontFamily: FONTS.bold, 
+  fontSize: 28,
+  fontWeight: "bold",
   color: COLORS.black, 
 },
 bannertext: {
@@ -147,13 +147,14 @@ headtext: {
   fontSize: 16,
   fontWeight: 600,
   marginBottom: 5,
+  marginTop: 5
 },
 table: {
   width: '100%',
   padding: 20,
   paddingTop: 0,
   overflow: 'hidden',
-  marginBottom: 20,
+  marginBottom: 10,
 },
 tbrow: {
   width: '100%',
