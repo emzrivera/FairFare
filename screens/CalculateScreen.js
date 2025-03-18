@@ -24,18 +24,18 @@ export default function CalculateScreen() {
       <Image source={require('../assets/home-bg.png')} style={styles.bgImage} />
 
       <Text style={styles.heading}>Where to?</Text>
-      <Ionicons name="help-circle" size={24} color={COLORS.primary} style={styles.helpIcon} />
+      <Ionicons name="help-circle" size={30} color={COLORS.primary} style={styles.helpIcon} />
 
       <Text style={styles.inputlabel}>From</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="Yu Boarding House, Queborac..." style={styles.input} onChangeText={setStartLocation} />
+        <TextInput placeholder="Enter Starting Point" style={styles.input} onChangeText={setStartLocation} />
       </View>
 
       <Text style={styles.inputlabel}>To</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="McDonald's Magsaysay, Magsay..." style={styles.input} onChangeText={setEndLocation} />
+        <TextInput placeholder="Enter Destination" style={styles.input} onChangeText={setEndLocation} />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleCalculateFare}>
@@ -89,7 +89,7 @@ export default function CalculateScreen() {
       </View>
       
       {/* View History Button */}
-      <TouchableOpacity style={styles.historyButton}>
+      <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('History')}>
         <Text style={styles.historyText}>See Full Ride History</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -109,8 +109,8 @@ bgImage: {
     left: -50
   },
   heading: { 
-    fontSize: 30, 
-    fontFamily: FONTS.bold, 
+    fontSize: 32, 
+    fontWeight: "bold",
     color: COLORS.black, 
     padding: 15
 },

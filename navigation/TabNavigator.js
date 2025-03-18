@@ -6,10 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 
 // Import screens
+import SplashScreen from '../screens/SplashScreen'; // Added SplashScreen
 import CalculateScreen from '../screens/CalculateScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ReportScreen from '../screens/ReportScreen';
-import FareResultScreen from '../screens/FareResultsScreen'; // New screen
+import FareResultScreen from '../screens/FareResultsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,6 +25,7 @@ function CalculateStack() {
   );
 }
 
+// Stack navigator for History tab
 function HistoryStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -32,38 +34,49 @@ function HistoryStack() {
   );
 }
 
-export default function TabNavigator() {
+// Bottom Tab Navigator
+function MainTabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Calculate') {
+            iconName = focused ? 'calculator' : 'calculator-outline';
+          } else if (route.name === 'History') {
+            iconName = focused ? 'time' : 'time-outline';
+          } else if (route.name === 'Report') {
+            iconName = focused ? 'document-text' : 'document-text-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: COLORS.brown,
+        tabBarInactiveTintColor: COLORS.white,
+        tabBarStyle: {
+          backgroundColor: COLORS.yellow,
+          paddingTop: 5,
+          height: 80,
+        },
+        headerShown: false,
+      })}
+    >
+      <Tab.Screen name="Calculate" component={CalculateStack} />
+      <Tab.Screen name="History" component={HistoryStack} />
+      <Tab.Screen name="Report" component={ReportScreen} />
+    </Tab.Navigator>
+  );
+}
+
+// Root Stack including SplashScreen
+export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Calculate') {
-              iconName = focused ? 'calculator' : 'calculator-outline';
-            } else if (route.name === 'History') {
-              iconName = focused ? 'time' : 'time-outline';
-            } else if (route.name === 'Report') {
-              iconName = focused ? 'document-text' : 'document-text-outline';
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: COLORS.brown,
-          tabBarInactiveTintColor: COLORS.white,
-          tabBarStyle: {
-            backgroundColor: COLORS.yellow,
-            paddingTop: 5,
-            height: 80,
-          },
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen name="Calculate" component={CalculateStack} />
-        <Tab.Screen name="History" component={HistoryStack} />
-        <Tab.Screen name="Report" component={ReportScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="MainTab" component={MainTabNavigator} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
