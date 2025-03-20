@@ -7,7 +7,7 @@ import { COLORS, FONTS } from '../constants/theme';
 
 // Import screens
 import SplashScreen from '../screens/SplashScreen'; // Added SplashScreen
-import CalculateScreen from '../screens/CalculateScreen';
+import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ReportScreen from '../screens/ReportScreen';
 import FareResultScreen from '../screens/FareResultsScreen';
@@ -15,11 +15,11 @@ import FareResultScreen from '../screens/FareResultsScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Stack navigator for Calculate tab
-function CalculateStack() {
+// Stack navigator for Home tab
+function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="CalculateMain" component={CalculateScreen} />
+      <Stack.Screen name="HomeMain" component={HomeScreen} />
       <Stack.Screen name="FareResult" component={FareResultScreen} />
     </Stack.Navigator>
   );
@@ -34,6 +34,14 @@ function HistoryStack() {
   );
 }
 
+function ReportStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ReportScreen" component={ReportScreen} />
+    </Stack.Navigator>
+  );
+}
+
 // Bottom Tab Navigator
 function MainTabNavigator() {
   return (
@@ -42,7 +50,7 @@ function MainTabNavigator() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Calculate') {
+          if (route.name === 'Home') {
             iconName = focused ? 'calculator' : 'calculator-outline';
           } else if (route.name === 'History') {
             iconName = focused ? 'time' : 'time-outline';
@@ -62,14 +70,12 @@ function MainTabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Calculate" component={CalculateStack} />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="History" component={HistoryStack} />
-      <Tab.Screen name="Report" component={ReportScreen} />
+      <Tab.Screen name="Report" component={ReportStack} />
     </Tab.Navigator>
   );
 }
-
-// Root Stack including SplashScreen
 export default function AppNavigator() {
   return (
     <NavigationContainer>
