@@ -1,11 +1,3 @@
-/* 
-Authored by: Ela Mariz Z. Rivera
-Company: Qwerty
-Project: Fair Fare
-Feature: [FF-16] Calculated Screen Frontend
-Description: Fair Fare Calculation Result Screen with total calculated fare and calculation breakdown
- */
-
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';
