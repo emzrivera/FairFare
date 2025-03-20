@@ -1,3 +1,11 @@
+/* 
+Authored by: Ela Mariz Z. Rivera
+Company: Qwerty
+Project: Fair Fare
+Feature: [FF-15] Home Screen Frontend
+Description: Fair Fare HomeScreen with Fare Calculator, Fare Card, and Recent Rides History
+ */
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';

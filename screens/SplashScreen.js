@@ -1,3 +1,11 @@
+/* 
+Authored by: Ela Mariz Z. Rivera
+Company: Qwerty
+Project: Fair Fare
+Feature: [FF-14] Splash Screen Frontend
+Description: Fair Fare Splash Screen with app and company logo
+ */
+
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';

@@ -11,7 +11,6 @@ export default function ReportScreen() {
   const pickerRef = useRef(); 
   
   return (
-    <ScrollView>
       <ScrollView style={styles.container}>
         
         <View style={styles.header}>
@@ -86,7 +85,6 @@ export default function ReportScreen() {
         </TouchableOpacity>
 
       </ScrollView>
-    </ScrollView>
   );
 }
 
@@ -101,7 +99,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     marginBottom: 10,
-    backgroundColor: COLORS.white
   },
   title: {
     fontSize: 32,
