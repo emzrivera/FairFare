@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function FareResultsScreen({ route }) {
   const { startLocation, endLocation} = route.params;
-  const navigation = useNavigation(); // Receive data
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
