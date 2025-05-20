@@ -1,40 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { fetchLocationSuggestions } from '../src/api/mapbox';
 
 export default function CalculateScreen() {
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
+  // const [fare, setFare] = useState("");
   const navigation = useNavigation();
-  const [suggestions, setSuggestions] = useState([]);
-  const [activeInput, setActiveInput] = useState(null); 
-
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      const query = activeInput === 'start' ? startLocation : endLocation;
-      if (query.length > 2) {
-        const results = await fetchLocationSuggestions(query);
-        setSuggestions(results);
-      } else {
-        setSuggestions([]);
-      }
-    };
-
-    fetchSuggestions();
-  }, [startLocation, endLocation]);
-
-  const handleSuggestionPress = (place) => {
-    if (activeInput === 'start') {
-      setStartLocation(place.place_name);
-    } else if (activeInput === 'end'){
-      setEndLocation(place.place_name);
-    }
-    setActiveInput(null);
-  };
 
   const handleCalculateFare = () => {
     if (startLocation && endLocation) {
@@ -44,12 +19,6 @@ export default function CalculateScreen() {
     }
   };
 
-  useEffect(() => {
-    const city = 'Naga City'; // Set your target city here
-    const filtered = allSuggestions.filter(item => item.city === city);
-    setFilteredSuggestions(filtered);
-  }, []);
-
   return (
     <ScrollView style={styles.container}>
       <Image source={require('../assets/home-bg.png')} style={styles.bgImage} />
@@ -57,54 +26,17 @@ export default function CalculateScreen() {
       <Text style={styles.heading}>Where to?</Text>
       <Ionicons name="help-circle" size={30} color={COLORS.primary} style={styles.helpIcon} />
 
-
       <Text style={styles.inputlabel}>From</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput
-          placeholder="Set Starting Point"
-          value={startLocation}
-          onChangeText={setStartLocation}
-          onFocus={() => setActiveInput('start')}
-          style={styles.input}
-        />
+        <TextInput placeholder="Enter Starting Point" style={styles.input} onChangeText={setStartLocation} />
       </View>
-
-      {activeInput === 'start' && (
-        <FlatList
-          data={suggestions}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleSuggestionPress(item)}>
-              <Text style={{ padding: 10, backgroundColor: '#eee' }}>{item.place_name}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
 
       <Text style={styles.inputlabel}>To</Text>
       <View style={styles.inputContainer}>
         <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput
-          placeholder="Enter Destination"
-          value={endLocation}
-          onChangeText={setEndLocation}
-          onFocus={() => setActiveInput('end')}
-          style={styles.input}
-        />
+        <TextInput placeholder="Enter Destination" style={styles.input} onChangeText={setEndLocation} />
       </View>
-
-      {activeInput === 'end' && (
-        <FlatList
-          data={suggestions}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleSuggestionPress(item)}>
-              <Text style={{ padding: 10, backgroundColor: '#eee' }}>{item.place_name}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
 
       <TouchableOpacity style={styles.button} onPress={handleCalculateFare}>
         <Text style={styles.buttonText}>Calculate Fare</Text>
@@ -125,7 +57,7 @@ export default function CalculateScreen() {
 
             <LinearGradient colors={['rgba(255, 165, 0, 0.8)', 'rgba(255, 215, 0, 0.8)']}  start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientContainer}>
             <View style={styles.row}>
-                
+
                 <Text style={styles.leftcell}>Discounted Fare</Text>
                 <Text style={styles.rightcell}>₱13.00</Text>
             </View>
@@ -155,7 +87,7 @@ export default function CalculateScreen() {
             <Text style={styles.rCell}>₱65.00</Text>
         </View>
       </View>
-      
+
       {/* View History Button */}
       <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('History')}>
         <Text style={styles.historyText}>See Full Ride History</Text>
