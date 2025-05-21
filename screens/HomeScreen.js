@@ -5,10 +5,42 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
+const DROPDOWN_OPTIONS = ['Regular', 'Senior', 'PWD'];
+
+function CustomDropdown({ selected, onSelect }) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <View style={{ marginBottom: 20 }}>
+      <TouchableOpacity style={styles.dropdown} onPress={() => setVisible(!visible)}>
+        <Text style={styles.selectedText}>{selected}</Text>
+        <Ionicons name="chevron-down" size={20} color={COLORS.yellow} />
+      </TouchableOpacity>
+
+      {visible && (
+        <View style={styles.dropdownMenu}>
+          {DROPDOWN_OPTIONS.map(option => (
+            <TouchableOpacity
+              key={option}
+              style={styles.option}
+              onPress={() => {
+                onSelect(option);
+                setVisible(false);
+              }}
+            >
+              <Text style={styles.optionText}>{option}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+};
+
 export default function CalculateScreen() {
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
-  // const [fare, setFare] = useState("");
+  const [passengerType, setPassengerType] = useState('Regular');
   const navigation = useNavigation();
 
   const handleCalculateFare = () => {
@@ -18,60 +50,88 @@ export default function CalculateScreen() {
       Alert.alert("Missing Input", "Please enter all fields before proceeding.");
     }
   };
+  
 
   return (
-    <ScrollView style={styles.container}>
-      <Image source={require('../assets/home-bg.png')} style={styles.bgImage} />
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
+        <LinearGradient colors={['rgba(255, 215, 0, 1)', 'rgba(255, 166, 0, 1)']} style={styles.banner}>
+        <Image source={require('../assets/home-bg.png')} style={styles.bgImage} />
+        </LinearGradient>
+      <View style={styles.container}>
+        
+        <View style={styles.headerContainer}>
+          <Text style={styles.heading}>Start Your Ride</Text>
+          <Ionicons name="help-circle" size={40} color={COLORS.primary} style={styles.helpIcon} />
+        </View>
 
-      <Text style={styles.heading}>Where to?</Text>
-      <Ionicons name="help-circle" size={30} color={COLORS.primary} style={styles.helpIcon} />
 
-      <Text style={styles.inputlabel}>From</Text>
-      <View style={styles.inputContainer}>
-        <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="Enter Starting Point" style={styles.input} onChangeText={setStartLocation} />
+        <View style={styles.locationInputContainer}>
+
+          <View style={styles.floatingInputWrapper}>
+            <Text style={styles.floatingLabel}>From</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="location" size={25} color={COLORS.primary} style={styles.icon} />
+              <TextInput
+                placeholder="Enter Starting Point"
+                style={styles.input}
+                onChangeText={setStartLocation}
+              />
+            </View>
+          </View>
+
+          <View style={styles.floatingInputWrapper}>
+            <Text style={styles.floatingLabel}>To</Text>
+            <View style={styles.inputContainer}>
+              <Ionicons name="location" size={25} color={COLORS.primary} style={styles.icon} />
+              <TextInput
+                placeholder="Enter Destination"
+                style={styles.input}
+                onChangeText={setStartLocation}
+              />
+            </View>
+          </View>
+
+          <CustomDropdown selected={passengerType} onSelect={setPassengerType} />
+
+
+          <TouchableOpacity style={styles.button} onPress={handleCalculateFare}>
+            <Text style={styles.buttonText}>Calculate Fare</Text>
+          </TouchableOpacity>
+        </View>
+      
+      <View style = {styles.fareTitleContainer}>
+        <Text style={styles.fareTitle}>Fare Rates</Text>
+        <TouchableOpacity style={styles.fareDetailsButton}>
+          <Text style={styles.fareDetails}>View Details</Text>
+        </TouchableOpacity>
       </View>
 
-      <Text style={styles.inputlabel}>To</Text>
-      <View style={styles.inputContainer}>
-        <Ionicons name="location" size={20} color={COLORS.primary} style={styles.icon} />
-        <TextInput placeholder="Enter Destination" style={styles.input} onChangeText={setEndLocation} />
+      <View style={styles.fareRatesContainer}>
+        <ImageBackground source={require('../assets/fare-card-1.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
+            <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Regular Fare</Text>
+                <Text style={styles.cardFare}>₱15.00</Text>
+                <Text style={styles.cardDesc}>2km</Text>
+            </View>
+        </ImageBackground>
+
+        <ImageBackground source={require('../assets/fare-card-2.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
+            <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Discounted</Text>
+                <Text style={styles.cardFare}>₱13.00</Text>
+                <Text style={styles.cardDesc}>Student, Senior</Text><Text style={styles.cardDesc}> Citizen, PWD</Text>
+            </View>
+        </ImageBackground>
+
+        <ImageBackground source={require('../assets/fare-card-3.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
+            <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>Special</Text>
+                <Text style={styles.cardFare}>₱60.00</Text>
+                <Text style={styles.cardDesc}>lorem ipsum</Text>
+            </View>
+        </ImageBackground>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleCalculateFare}>
-        <Text style={styles.buttonText}>Calculate Fare</Text>
-      </TouchableOpacity>
-
-      <ImageBackground
-        source={require('../assets/farecard-bg.png')}
-        style={styles.fareCardBackground}
-        imageStyle={{ borderRadius: 10 }}
-        >
-        <Text style={styles.fareTitle}>FARE RATES</Text>
-            <LinearGradient colors={['rgba(255, 165, 0, 0.8)', 'rgba(255, 215, 0, 0.8)']}  start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientContainer}>
-            <View style={styles.row}>
-                <Text style={styles.leftcell}>Regular Fare</Text>
-                <Text style={styles.rightcell}>₱15.00</Text>
-            </View>
-            </LinearGradient>
-
-            <LinearGradient colors={['rgba(255, 165, 0, 0.8)', 'rgba(255, 215, 0, 0.8)']}  start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientContainer}>
-            <View style={styles.row}>
-
-                <Text style={styles.leftcell}>Discounted Fare</Text>
-                <Text style={styles.rightcell}>₱13.00</Text>
-            </View>
-            </LinearGradient>
-
-            <LinearGradient colors={['rgba(255, 165, 0, 0.8)', 'rgba(255, 215, 0, 0.8)']}  start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.gradientContainer}>
-            <View style={styles.row}>
-                <Text style={styles.leftcell}>Special Ride</Text>
-                <Text style={styles.rightcell}>₱60.00</Text>
-            </View>
-            </LinearGradient>
-      </ImageBackground>
-
-      {/* Recent Rides */}
       <Text style={styles.trackTitle}>Track Recent Rides</Text>
       <View style={styles.tracktable}>
         <View style={styles.trackrow}>
@@ -88,10 +148,10 @@ export default function CalculateScreen() {
         </View>
       </View>
 
-      {/* View History Button */}
       <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('History')}>
         <Text style={styles.historyText}>See Full Ride History</Text>
       </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -99,110 +159,210 @@ export default function CalculateScreen() {
 const styles = StyleSheet.create({
   container: { 
     flex: 1,
-    backgroundColor: COLORS.white, 
     padding: 20, 
     paddingTop: 80
 },
+
+banner: {
+  position: 'absolute',
+  borderBottomLeftRadius: 25,
+  width: '100%',
+  height: 350,
+},
+
 bgImage: {
-    position: 'absolute', // Allows positioning anywhere
-    top: -80,   // Moves image to the top
-    left: -50
-  },
+  position: 'absolute',
+  width: '100%',
+  height: 350,
+},
+
+headerContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: 15,
+},
+
   heading: { 
     fontSize: 32, 
     fontWeight: "bold",
-    color: COLORS.black, 
-    padding: 15
+    color: COLORS.white, 
 },
   helpIcon: { 
-    color: COLORS.yellow,
-    position: 'absolute', 
-    right: 20, 
-    top: 20
+    color: COLORS.white,
 },
- inputlabel: {
-    color: COLORS.fontgray,
-    fontSize: 12,
-    marginHorizontal: 15,
-    marginVertical: 5,
+
+locationInputContainer: {
+  backgroundColor: COLORS.white,
+  paddingTop: 40,
+  paddingBottom: 30,
+  paddingHorizontal: 25,
+  borderRadius: 10,
+  borderWidth: 1,
+  borderColor: COLORS.yellow,
+  marginVertical: 15,
+  marginBottom: 15,
 },
-  inputContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: COLORS.white, 
-    padding: 15, 
-    borderRadius: 10, 
-    marginVertical: 5, 
-    marginBottom: 20,
-    marginHorizontal:  15, 
-    borderColor: COLORS.fontgray, 
-    borderWidth: 1
+
+ floatingInputWrapper: {
+  position: 'relative',
+  marginBottom: 25,
 },
+
+floatingLabel: {
+  position: 'absolute',
+  top: -8,
+  left: 30,
+  zIndex: 1,
+  backgroundColor: COLORS.white,
+  paddingHorizontal: 10,
+  fontSize: 12,
+  color: COLORS.fontgray,
+},
+
+inputContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: COLORS.white,
+  padding: 15,
+  borderRadius: 10,
+  borderColor: COLORS.yellow,
+  borderWidth: 1,
+},
+
   icon: { 
-    marginRight: 10 
+    marginRight: 10,
+    color: COLORS.yellow,
 },
   input: { 
     flex: 1, 
     fontSize: 16 
 },
+dropdown: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 15,
+  paddingVertical: 10,
+  backgroundColor: '#FFF7DC',
+  borderColor: COLORS.yellow,
+  borderRadius: 10,
+  borderWidth: 1,
+},
+
+selectedText: {
+  fontSize: 16,
+  color: COLORS.brown,
+},
+
+dropdownMenu: {
+  backgroundColor: COLORS.white,
+  borderColor: COLORS.yellow,
+  // borderBottomWidth:0,
+  borderWidth: 1,
+  borderRadius: 10,
+  marginTop: 5,
+  elevation: 5,
+  overflow: 'hidden',
+},
+
+option: {
+  paddingHorizontal: 15,
+  paddingVertical: 10,
+  borderBottomWidth: 0.5,
+  borderBottomColor: '#f0e6b6',
+},
+
+optionText: {
+  fontSize: 15,
+  color: COLORS.brown,
+},
+
   button: { 
-    backgroundColor: COLORS.yellow, 
+    backgroundColor: COLORS.orange, 
     padding: 10, 
     borderRadius: 10, 
     alignItems: 'center', 
-    marginBottom: 10,
-    marginHorizontal:  15
 },
   buttonText: { 
     fontSize: 18, 
     color: COLORS.white, 
     fontFamily: FONTS.bold 
 },
-  fareCardBackground: {
-  width: '100%',
-  padding: 20,
-  marginHorizontal: 17,
-  marginVertical: 20,
-  alignContent: 'center',
-  justifyContent: 'center',
+
+fareTitleContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: 15,
+  
 },
 
-  fareTitle: { 
-    fontSize: 20, 
-    fontFamily: FONTS.bold, 
-    color: COLORS.brown, 
-    marginBottom: 10,
-    marginLeft: 25
+fareTitle: { 
+  fontSize: 22, 
+  fontFamily: FONTS.bold, 
+  color: COLORS.black, 
 },
-  gradientContainer: {
-    width: '60%',
-    marginLeft: -20,
-    marginVertical: 2
+
+fareDetails: {
+  fontSize: 16,
+  color: COLORS.fontgray
 },
-  row: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 5,
-    paddingLeft: 20,
-    HorizontalAlign: 'center'
+
+fareRatesContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: 15,
+  paddingHorizontal: 15,
 },
-  leftcell: {
-    fontSize: 12,
-    flex: 1,
-    color: COLORS.brown
+
+fareCard: {
+  width: 110,
+  aspectRatio: 3 / 3.2, // control height
+  borderRadius: 10,
+  overflow: 'hidden',
+  borderWidth: 1,
+  borderColor: COLORS.yellow,
+  backgroundColor: 'transparent',
+  justifyContent: 'flex-start',
+  padding: 10,
+
 },
-  rightcell: {
-    fontSize: 14,
-    fontWeight: 700,
-    flex: 1,
-    color: COLORS.brown,
-    textAlign: 'right',
+
+fareCardImage: {
+  resizeMode: 'cover',
+  borderRadius: 12,
 },
-  trackTitle: { 
-    fontSize: 18, 
-    fontFamily: FONTS.bold, 
-    padding: 15
+
+cardContent: {
+  position: 'relative',
+  alignItems: 'center',
+  marginTop: 20,
+},
+
+cardTitle: {
+  fontSize: 14,
+  fontWeight: 'bold',
+  color: COLORS.brown,
+},
+
+cardFare: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: COLORS.yellow,
+},
+
+cardDesc: {
+  fontSize: 10,
+  color: COLORS.fontgray,
+},
+
+trackTitle: { 
+  fontSize: 22, 
+  fontFamily: FONTS.bold, 
+  color: COLORS.brown, 
+  paddingBottom: 10,
+  padding: 15,
 },
   tracktable: {
     width: '100%',

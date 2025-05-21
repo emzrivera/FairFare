@@ -11,7 +11,7 @@ export default function ReportScreen() {
   const pickerRef = useRef(); 
   
   return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.Reportcontainer}>
         
         <View style={styles.header}>
           <Image source={require('../assets/Report-icon.png')} style={styles.headerImage} />
@@ -89,10 +89,9 @@ export default function ReportScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  Reportcontainer: {
     flex: 1,
     padding: 20,
-    marginTop: 70,
     backgroundColor: COLORS.white
   },
   header: {

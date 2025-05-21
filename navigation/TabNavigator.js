@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -49,23 +50,47 @@ function MainTabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
+          let label;
 
           if (route.name === 'Home') {
             iconName = focused ? 'calculator' : 'calculator-outline';
+            label = 'Calculate';
           } else if (route.name === 'History') {
             iconName = focused ? 'time' : 'time-outline';
+            label = 'History';
           } else if (route.name === 'Report') {
             iconName = focused ? 'document-text' : 'document-text-outline';
+            label = 'Report';
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View style={{
+              backgroundColor: focused ? COLORS.brown : 'transparent',
+              width: size + 65,
+              height: size + 25,
+              borderRadius: 15,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Ionicons name={iconName} size={size} color={focused ? '#fff' : color} />
+              <Text style={{
+                fontSize: 12,
+                fontWeight: 'bold',
+                color: focused ? '#fff' : color,
+              }}>
+                {label}
+              </Text>
+            </View>
+          );
         },
-        tabBarActiveTintColor: COLORS.brown,
-        tabBarInactiveTintColor: COLORS.white,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: COLORS.white,
+        tabBarInactiveTintColor: COLORS.brown,
         tabBarStyle: {
-          backgroundColor: COLORS.yellow,
-          paddingTop: 5,
-          height: 80,
+          backgroundColor: COLORS.white,
+          paddingTop: 15,
+          paddingHorizontal: 30,
+          height: 90,
         },
         headerShown: false,
       })}
