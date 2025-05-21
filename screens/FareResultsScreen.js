@@ -1,3 +1,11 @@
+/* 
+Authored by: Ela Mariz Z. Rivera
+Company: Qwerty
+Project: Fair Fare
+Feature: [FF-16] Calculated Screen Frontend
+Description: Fair Fare Calculation Result Screen with total calculated fare and calculation breakdown
+ */
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';
@@ -7,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function FareResultsScreen({ route }) {
   const { startLocation, endLocation} = route.params;
-  const navigation = useNavigation(); // Receive data
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -102,8 +110,8 @@ header: {
   justifyContent: 'space-between',
 },
 heading: {
-  fontSize: 25,
-  fontFamily: FONTS.bold, 
+  fontSize: 28,
+  fontWeight: "bold",
   color: COLORS.black, 
 },
 bannertext: {
@@ -147,13 +155,14 @@ headtext: {
   fontSize: 16,
   fontWeight: 600,
   marginBottom: 5,
+  marginTop: 5
 },
 table: {
   width: '100%',
   padding: 20,
   paddingTop: 0,
   overflow: 'hidden',
-  marginBottom: 20,
+  marginBottom: 10,
 },
 tbrow: {
   width: '100%',

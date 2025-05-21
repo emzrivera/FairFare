@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import RideHistoryCard from './components/RideHistoryCard'; 
+import { COLORS, FONTS } from '../constants/theme';
 
 export default function HistoryScreen() {
   const rideData = [
@@ -62,15 +63,17 @@ export default function HistoryScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.white,
+  },
   stitle: {
     marginTop: 100,
     marginLeft: 35,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    backgroundColor: '#f4f4f4',
   },
   text: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

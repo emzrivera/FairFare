@@ -5,6 +5,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from "react
 import { FontAwesome } from "@expo/vector-icons"; 
 import RNPickerSelect from "react-native-picker-select";
 import { ScrollView } from "react-native";
+import { COLORS, FONTS } from '../constants/theme';
 
 
 export default function ReportScreen() {
@@ -12,8 +13,7 @@ export default function ReportScreen() {
   const pickerRef = useRef(); 
   
   return (
-    <ScrollView>
-      <View style={styles.container}>
+      <ScrollView style={styles.Reportcontainer}>
         
         <View style={styles.header}>
           <Image source={require('../assets/Report-icon.png')} style={styles.headerImage} />
@@ -86,17 +86,15 @@ export default function ReportScreen() {
           <Text style={styles.submitText}>Submit</Text>
         </TouchableOpacity>
 
-      </View>
-    </ScrollView>
+      </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  Reportcontainer: {
     flex: 1,
     padding: 20,
-    marginTop: 70,
-    
+    backgroundColor: COLORS.white
   },
   header: {
     flexDirection: "column",
