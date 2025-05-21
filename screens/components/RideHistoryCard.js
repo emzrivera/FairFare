@@ -1,3 +1,10 @@
+/* Authored by: Angelea Dela Torre
+Company: QWERTY
+Project: Fair Fare
+Feature: [FEATURECODE-001] Ride History
+Description: This feature/page stores the history or the calculation records of the user's completed rides.
+ */
+
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FontAwesome } from "@expo/vector-icons"; 
