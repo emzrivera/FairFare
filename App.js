@@ -1,7 +1,9 @@
+import 'react-native-url-polyfill/auto';
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import TabNavigator from './navigation/TabNavigator';
+
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);

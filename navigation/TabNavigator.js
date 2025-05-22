@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../constants/theme';
 
 // Import screens
@@ -13,6 +14,11 @@ import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ReportScreen from '../screens/ReportScreen';
 import FareResultScreen from '../screens/FareResultsScreen';
+
+//admin screens
+import AdminLogin from '../screens/AdminLoginScreen'; 
+import AdminHome from '../screens/AdminHomeScreen';
+import AdminUpdateRates from '../screens/AdminUpdateRatesScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -44,9 +50,81 @@ function ReportStack() {
   );
 }
 
+function AdminHomeStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AdminHome" component={AdminHome} />
+    </Stack.Navigator>
+  );
+}
+
+function AdminUpdateRatesStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AdminUpdateRates" component={AdminUpdateRates} />
+    </Stack.Navigator>
+  );
+}
 
 
 // Bottom Tab Navigator
+function AdminTabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let label;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'apps' : 'apps-outline';
+            label = 'Dashboard';
+          } else if (route.name === 'Update') {
+            iconName = focused ? 'calculator' : 'calculator-outline';
+            label = 'Rates';
+          } else if (route.name === 'Report') {
+            iconName = focused ? 'document-text' : 'document-text-outline';
+            label = 'Report';
+          }
+
+          return (
+            <View style={{
+              backgroundColor: focused ? COLORS.brown : 'transparent',
+              width: size + 65,
+              height: size + 25,
+              borderRadius: 15,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Ionicons name={iconName} size={size} color={focused ? '#fff' : color} />
+              <Text style={{
+                fontSize: 12,
+                fontWeight: 'bold',
+                color: focused ? '#fff' : color,
+              }}>
+                {label}
+              </Text>
+            </View>
+          );
+        },
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: COLORS.white,
+        tabBarInactiveTintColor: COLORS.brown,
+        tabBarStyle: {
+          backgroundColor: COLORS.white,
+          paddingTop: 15,
+          paddingHorizontal: 30,
+          height: 90,
+        },
+        headerShown: false,
+      })}
+    >
+      <Tab.Screen name="Home" component={AdminHome} />
+      <Tab.Screen name="Update" component={AdminUpdateRates} />
+    </Tab.Navigator>
+  );
+}
+
 function MainTabNavigator() {
   return (
     <Tab.Navigator
@@ -104,13 +182,16 @@ function MainTabNavigator() {
     </Tab.Navigator>
   );
 }
+
+
 export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
          <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
- 
+        <Stack.Screen name="AdminLogin" component={AdminLogin}/>
+        <Stack.Screen name="AdminTab" component={AdminTabNavigator}/>
         <Stack.Screen name="MainTab" component={MainTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

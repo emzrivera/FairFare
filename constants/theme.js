@@ -3,7 +3,7 @@ export const COLORS = {
     orange: '#FFA502',
     brown: '#34260E', 
     fontgray: '#8E8E8E',
-    boxgray: '#F5F5F5',
+    boxgray: '#DDDDDD',
     white: '#FFFFFF',
     black: '#000000',
   };

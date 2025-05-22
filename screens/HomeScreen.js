@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, ImageBackground, Alert } from 'react-native';
 import { COLORS, FONTS } from '../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-
+import { getFares } from '../lib/api';
+  import Constants from 'expo-constants';
+  const MAPBOX_TOKEN = Constants.expoConfig.extra.mapboxToken;
 const DROPDOWN_OPTIONS = ['Regular', 'Senior', 'PWD'];
 
 function CustomDropdown({ selected, onSelect }) {
@@ -42,15 +45,86 @@ export default function CalculateScreen() {
   const [endLocation, setEndLocation] = useState("");
   const [passengerType, setPassengerType] = useState('Regular');
   const navigation = useNavigation();
+  const [fares, setFares] = useState({});
 
-  const handleCalculateFare = () => {
-    if (startLocation && endLocation) {
-      navigation.navigate("FareResult", { startLocation, endLocation});
-    } else {
-      Alert.alert("Missing Input", "Please enter all fields before proceeding.");
-    }
-  };
+
+
+  const geocodePlace = async (placeName, apiKey) => {
+  const url = `https://api.openrouteservice.org/geocode/search?api_key=${apiKey}&text=${encodeURIComponent(placeName)}&size=1`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.features && data.features.length > 0) {
+    const [lng, lat] = data.features[0].geometry.coordinates;
+    return { lat, lng };
+  } else {
+    throw new Error(`Location not found: ${placeName}`);
+  }
+};
+
+const getDistanceORS = async (start, end, apiKey) => {
+  const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  const distanceInKm = data.features[0].properties.summary.distance / 1000;
+  return distanceInKm;
+};
+
+const handleCalculateFare = async () => {
+  if (!startLocation || !endLocation) {
+    Alert.alert("Missing Input", "Please enter both start and end location.");
+    return;
+  }
+
+  try {
+    const ORS_API_KEY = '5b3ce3597851110001cf6248e6e988c68cf04d76948e6a0f17c03b61'; // or load from env
+    const startCoords = await geocodePlace(startLocation, ORS_API_KEY);
+    const endCoords = await geocodePlace(endLocation, ORS_API_KEY);
+    const distance = await getDistanceORS(startCoords, endCoords, ORS_API_KEY);
+
+    let rate;
+  let estimatedFare;
+
+  if (passengerType.toLowerCase() === 'special') {
+    rate = fares.special;
+    estimatedFare = (distance / 5) * rate;
+  } else if (passengerType.toLowerCase() === 'Regular') {
+    rate = fares.regular;
+    estimatedFare = (distance / 2) * rate;
+  } else {
+    rate = fares.discounted;
+    estimatedFare = (distance / 2) * rate;
+  }
+
+estimatedFare = Math.ceil(estimatedFare);
+
+    navigation.navigate("FareResult", {
+      startLocation,
+      endLocation,
+      distance,
+      estimatedFare,
+    });
+  } catch (err) {
+    console.error(err);
+    Alert.alert("Error", "Unable to calculate fare. Check locations.");
+  }
+};
+
   
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchFares = async () => {
+        const data = await getFares();
+        const map = {};
+        data.forEach(fare => {
+          map[fare.type] = fare.price;
+        });
+        setFares(map);
+      };
+      fetchFares();
+    }, [])
+  );
+
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -86,7 +160,7 @@ export default function CalculateScreen() {
               <TextInput
                 placeholder="Enter Destination"
                 style={styles.input}
-                onChangeText={setStartLocation}
+                onChangeText={setEndLocation}
               />
             </View>
           </View>
@@ -110,7 +184,7 @@ export default function CalculateScreen() {
         <ImageBackground source={require('../assets/fare-card-1.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
             <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>Regular Fare</Text>
-                <Text style={styles.cardFare}>₱15.00</Text>
+                <Text style={styles.cardFare}>₱{fares.regular}</Text>
                 <Text style={styles.cardDesc}>2km</Text>
             </View>
         </ImageBackground>
@@ -118,7 +192,7 @@ export default function CalculateScreen() {
         <ImageBackground source={require('../assets/fare-card-2.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
             <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>Discounted</Text>
-                <Text style={styles.cardFare}>₱13.00</Text>
+                <Text style={styles.cardFare}>₱{fares.discounted}</Text>
                 <Text style={styles.cardDesc}>Student, Senior</Text><Text style={styles.cardDesc}> Citizen, PWD</Text>
             </View>
         </ImageBackground>
@@ -126,8 +200,8 @@ export default function CalculateScreen() {
         <ImageBackground source={require('../assets/fare-card-3.png')} style={styles.fareCard} imageStyle={styles.fareCardImage}>
             <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>Special</Text>
-                <Text style={styles.cardFare}>₱60.00</Text>
-                <Text style={styles.cardDesc}>lorem ipsum</Text>
+                <Text style={styles.cardFare}>₱{fares.special}</Text>
+                <Text style={styles.cardDesc}>5km</Text>
             </View>
         </ImageBackground>
       </View>
@@ -279,7 +353,7 @@ optionText: {
 },
 
   button: { 
-    backgroundColor: COLORS.orange, 
+    backgroundColor: COLORS.yellow, 
     padding: 10, 
     borderRadius: 10, 
     alignItems: 'center', 
