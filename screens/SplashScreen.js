@@ -15,7 +15,7 @@ export default function SplashScreenComponent() {
 
         setTimeout(async () => {
           await SplashScreen.hideAsync();
-          navigation.replace('MainTab');
+          navigation.replace('Onboarding');
         }, 2000);
       } catch (e) {
         console.warn(e);

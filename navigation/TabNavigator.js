@@ -8,6 +8,7 @@ import { COLORS, FONTS } from '../constants/theme';
 
 // Import screens
 import SplashScreen from '../screens/SplashScreen'; // Added SplashScreen
+import Onboarding from '../screens/Onboarding';
 import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ReportScreen from '../screens/ReportScreen';
@@ -42,6 +43,8 @@ function ReportStack() {
     </Stack.Navigator>
   );
 }
+
+
 
 // Bottom Tab Navigator
 function MainTabNavigator() {
@@ -105,7 +108,9 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+ 
         <Stack.Screen name="MainTab" component={MainTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
