@@ -12,6 +12,9 @@ export default {
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
       mapboxToken: process.env.MAPBOX_TOKEN,
+      eas: {
+        projectId: "67a816d9-fe37-4c38-80f6-6600362088bf"
+      },
     },
   },
 };
