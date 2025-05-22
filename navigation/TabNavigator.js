@@ -67,6 +67,14 @@ function AdminUpdateRatesStack() {
   );
 }
 
+function AdminReportStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AdminReportScreen" component={AdminReports} />
+    </Stack.Navigator>
+  );
+}
+
 
 // Bottom Tab Navigator
 function AdminTabNavigator() {
@@ -83,9 +91,9 @@ function AdminTabNavigator() {
           } else if (route.name === 'Update') {
             iconName = focused ? 'calculator' : 'calculator-outline';
             label = 'Rates';
-          } else if (route.name === 'Report') {
+          } else if (route.name === 'Reports') {
             iconName = focused ? 'document-text' : 'document-text-outline';
-            label = 'Report';
+            label = 'Reports';
           }
 
           return (
@@ -120,9 +128,9 @@ function AdminTabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={AdminHome} />
-      <Tab.Screen name="Update" component={AdminUpdateRates} />
-      <Tab.Screen name="Report" component={AdminReport} />
+      <Tab.Screen name="Home" component={AdminHomeStack} />
+      <Tab.Screen name="Update" component={AdminUpdateRatesStack} />
+      <Tab.Screen name="Reports" component={AdminReportStack} />
 
     </Tab.Navigator>
   );
@@ -191,8 +199,8 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="AdminLogin" component={AdminLogin}/>
         <Stack.Screen name="AdminTab" component={AdminTabNavigator}/>
         <Stack.Screen name="MainTab" component={MainTabNavigator} />
