@@ -19,6 +19,7 @@ import FareResultScreen from '../screens/FareResultsScreen';
 import AdminLogin from '../screens/AdminLoginScreen'; 
 import AdminHome from '../screens/AdminHomeScreen';
 import AdminUpdateRates from '../screens/AdminUpdateRatesScreen';
+import AdminReport from '../screens/AdminReportScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -121,6 +122,8 @@ function AdminTabNavigator() {
     >
       <Tab.Screen name="Home" component={AdminHome} />
       <Tab.Screen name="Update" component={AdminUpdateRates} />
+      <Tab.Screen name="Report" component={AdminReport} />
+
     </Tab.Navigator>
   );
 }

@@ -81,7 +81,7 @@ export default function Onboarding() {
               {index === 1 && (
                 <TouchableOpacity
                   style={styles.adminButton}
-                  // onPress={() => navigation.navigate('AdminLogin')}
+                  onPress={() => navigation.navigate('AdminLogin')}
                 >
                   <Text style={styles.adminButtonText}>Login as Admin</Text>
                 </TouchableOpacity>

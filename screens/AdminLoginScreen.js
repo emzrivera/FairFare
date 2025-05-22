@@ -37,7 +37,7 @@ export default function AdminLoginScreen({ navigation }) {
     const data = await res.json();
 
    if (res.ok) {
-    navigation.replace('MainTab');
+    navigation.replace('AdminTab');
   } else {
     Alert.alert('Login Failed', data.error_description || 'Check your credentials');
   }
